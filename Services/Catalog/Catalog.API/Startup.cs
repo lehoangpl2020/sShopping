@@ -1,10 +1,16 @@
-using System.Reflection;
-
+using Catalog.Application.Queries;
+using Catalog.Core.Repositories;
+using Catalog.Infrastructure.Data;
+using Catalog.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using Catalog.Core.Entities;
 
 namespace Catalog.API;
 
@@ -24,12 +30,23 @@ public class Startup
         services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog.API", Version = "v1" }); });
 
 
+
+        // DI
+        var assembly = Assembly.GetExecutingAssembly();
+       // services.AddMediatR(c => c.RegisterServicesFromAssembly(assembly));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(GetAllProductQuery)));
+
+
+        services.AddScoped<ICatalogContext, CatalogContext>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+
+
         services.AddControllers();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if(env.IsDevelopment())
+        if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
