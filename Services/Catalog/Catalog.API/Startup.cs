@@ -35,6 +35,8 @@ public class Startup
 
 
         // DI
+        services.AddAutoMapper(typeof(Startup));
+
         var assembly = Assembly.GetExecutingAssembly();
        // services.AddMediatR(c => c.RegisterServicesFromAssembly(assembly));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(GetAllProductQuery)));

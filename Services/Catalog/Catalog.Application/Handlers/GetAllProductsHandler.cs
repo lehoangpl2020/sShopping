@@ -1,5 +1,7 @@
-﻿using Catalog.Application.Queries;
+﻿using Catalog.Application.Mappers;
+using Catalog.Application.Queries;
 using Catalog.Application.Responses;
+using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using MediatR;
 using System;
@@ -22,19 +24,9 @@ namespace Catalog.Application.Handlers
         public async Task<List<ProductResponse>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
             var productList = await _productRepository.GetProducts();
+            var productResponseList = ProductMapper.Mapper.Map<List<ProductResponse>>(productList);
 
-            return productList.Select(x => new ProductResponse
-            {
-                Brands = x.Brands,
-                Description = x.Description,
-                Id = x.Id,
-                ImageFile = x.ImageFile,
-                Name = x.Name,
-                Price = x.Price,
-                Summary = x.Summary,
-                Types = x.Types
-
-            }).ToList();
+            return productResponseList;
         }
     }
 }
