@@ -1,13 +1,12 @@
 ﻿using Catalog.Application.Queries;
 using Catalog.Application.Responses;
-using Catalog.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Catalog.API.Controllers
 {
-    [Route("[controller]")]
-    public class CatalogController : ControllerBase
+    public class CatalogController : ApiController
     {
         private readonly IMediator _mediator;
 
@@ -18,6 +17,8 @@ namespace Catalog.API.Controllers
 
 
         [HttpGet]
+        [Route("GetAllProducts")]
+        [ProducesResponseType(typeof(IList<ProductResponse>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IList<ProductResponse>>> GetAllProducts()
         {
             var query = new GetAllProductQuery();

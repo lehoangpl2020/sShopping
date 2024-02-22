@@ -26,6 +26,9 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddApiVersioning();
+
+
 
         services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog.API", Version = "v1" }); });
 
