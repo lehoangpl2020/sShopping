@@ -30,9 +30,29 @@ namespace Catalog.Infrastructure.Data.Repositories
                 filter &= searchFilter;
             }
 
-            var data = await _context
-                .Products
-                .Find(filter)
+            if (!string.IsNullOrEmpty(specParams.BrandId))
+            {
+                var brandFilter = builder.Eq(x => x.Brands.Id, specParams.BrandId);
+                filter &= brandFilter;
+            }
+            if (!string.IsNullOrEmpty(specParams.TypeId))
+            {
+                var typeFilter = builder.Eq(x => x.Types.Id, specParams.TypeId);
+                filter &= typeFilter;
+            }
+
+            var query = _context
+            .Products
+            .Find(filter);
+
+            query = specParams.Sort switch
+            {
+                "priceAsc" => query.Sort(Builders<Product>.Sort.Ascending("Price")),
+                "priceDesc" => query.Sort(Builders<Product>.Sort.Descending("Price")),
+                _ => query.Sort(Builders<Product>.Sort.Ascending("Name")),
+            };
+
+            var data = await query
                 .Skip(specParams.PageSize * (specParams.PageIndex - 1))
                 .Limit(specParams.PageSize)
                 .ToListAsync();
@@ -41,8 +61,8 @@ namespace Catalog.Infrastructure.Data.Repositories
             {
                 PageSize = specParams.PageSize,
                 PageIndex = specParams.PageIndex,
-                Data= data,
-                Count =  await _context.Products.Find(filter).CountDocumentsAsync()
+                Data = data,
+                Count = await _context.Products.Find(filter).CountDocumentsAsync()
             };
         }
 
