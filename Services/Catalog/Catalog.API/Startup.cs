@@ -2,15 +2,8 @@ using Catalog.Application.Queries;
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Data.Repositories;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Catalog.Core.Entities;
 
 namespace Catalog.API;
 
@@ -32,6 +25,11 @@ public class Startup
 
         services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog.API", Version = "v1" }); });
 
+        //Redis Settings
+        //services.AddStack (options =>
+        //{
+        //    options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString");
+        //});
 
 
         // DI
