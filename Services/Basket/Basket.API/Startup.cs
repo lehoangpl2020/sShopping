@@ -19,13 +19,16 @@
 //app.MapRazorPages();
 
 //app.Run();
+using Basket.API.Swagger;
 using Basket.Application.Handlers;
 using Basket.Core.Repositories;
 using Basket.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 public class Startup
 {
@@ -46,9 +49,7 @@ public class Startup
             options.ReportApiVersions = true;
         });
 
-        services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket.API", Version = "v1" }); });
-
-
+       
 
         services.AddVersionedApiExplorer(options =>
         {
@@ -74,6 +75,15 @@ public class Startup
         });
 
 
+        //services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket.API", Version = "v1" }); });
+
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+        services.AddSwaggerGen(options =>
+        {
+            options.OperationFilter<SwaggerDefaultValues>();
+        });
+
+
         // Media
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateShoppingCartCommandHandler)));
 
@@ -91,8 +101,15 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Baseket API v1"));
+            //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Baseket API v1"));
+            app.UseSwaggerUI(options =>
+            {
 
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                }
+            });
         }
         app.UseRouting();
         app.UseEndpoints(endpoints =>
