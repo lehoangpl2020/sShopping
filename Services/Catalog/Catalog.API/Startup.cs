@@ -38,13 +38,14 @@ public class Startup
         services.AddAutoMapper(typeof(Startup));
 
         var assembly = Assembly.GetExecutingAssembly();
-       // services.AddMediatR(c => c.RegisterServicesFromAssembly(assembly));
+        // services.AddMediatR(c => c.RegisterServicesFromAssembly(assembly));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(GetAllProductQuery)));
 
 
         services.AddScoped<ICatalogContext, CatalogContext>();
         services.AddScoped<IProductRepository, ProductRepository>();
-
+        services.AddScoped<IBrandRepository, ProductRepository>();
+        services.AddScoped<ITypesRepository, ProductRepository>();
 
         services.AddControllers();
     }
