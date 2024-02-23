@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using Catalog.Core.Specs;
 
 namespace Catalog.Infrastructure.Data.Repositories
 {
@@ -16,6 +17,33 @@ namespace Catalog.Infrastructure.Data.Repositories
         public ProductRepository(ICatalogContext context)
         {
             _context = context;
+        }
+
+        public async Task<Pagination<Product>> GetProducts(CatalogSpecParams specParams)
+        {
+            var builder = Builders<Product>.Filter;
+            var filter = builder.Empty;
+
+            if (!string.IsNullOrEmpty(specParams.Search))
+            {
+                var searchFilter = builder.Regex(x => x.Name, new MongoDB.Bson.BsonRegularExpression(specParams.Search));
+                filter &= searchFilter;
+            }
+
+            var data = await _context
+                .Products
+                .Find(filter)
+                .Skip(specParams.PageSize * (specParams.PageIndex - 1))
+                .Limit(specParams.PageSize)
+                .ToListAsync();
+
+            return new Pagination<Product>
+            {
+                PageSize = specParams.PageSize,
+                PageIndex = specParams.PageIndex,
+                Data= data,
+                Count =  await _context.Products.Find(filter).CountDocumentsAsync()
+            };
         }
 
         public Task<Product> CreateProduct(Product product)
@@ -43,10 +71,7 @@ namespace Catalog.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<List<Product>> GetProducts()
-        {
-            return await _context.Products.Find(p => true).ToListAsync();
-        }
+
 
         public Task<bool> UpdateProduct(Product product)
         {

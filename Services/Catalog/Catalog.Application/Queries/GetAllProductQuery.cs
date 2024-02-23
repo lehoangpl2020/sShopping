@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Catalog.Application.Responses;
-using Catalog.Core.Entities;
+﻿using Catalog.Application.Responses;
+using Catalog.Core.Specs;
 using MediatR;
 
 namespace Catalog.Application.Queries
 {
-    public class GetAllProductQuery : IRequest<List<ProductResponse>>
+    public class GetAllProductQuery : IRequest<Pagination<ProductResponse>>
     {
-        public GetAllProductQuery()
-        {
+      
+        public CatalogSpecParams CatalogSpecParams { get; set; }
 
+        public GetAllProductQuery(CatalogSpecParams catalogSpecParams)
+        {
+            CatalogSpecParams = catalogSpecParams;
         }
     }
 }

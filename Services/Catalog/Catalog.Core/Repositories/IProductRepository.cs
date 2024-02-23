@@ -1,4 +1,5 @@
 using Catalog.Core.Entities;
+using Catalog.Core.Specs;
 //using Catalog.Core.Specs;
 
 namespace Catalog.Core.Repositories;
@@ -6,7 +7,7 @@ namespace Catalog.Core.Repositories;
 public interface IProductRepository
 {
     //Task<Pagination<Product>> GetProducts(CatalogSpecParams catalogSpecParams);
-    Task<List<Product>> GetProducts();
+    Task<Pagination<Product>> GetProducts(CatalogSpecParams specParams);
 
     Task<Product> GetProduct(string id);
     Task<IEnumerable<Product>> GetProductByName(string name);
