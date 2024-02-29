@@ -6,6 +6,7 @@ using Discount.Application.Handlers;
 using Discount.Core.Repositories;
 using Discount.Infrastructure.Repositories;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Discount.API;
 
@@ -14,6 +15,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         //services.AddMediatR(typeof(CreateDiscountCommandHandler).GetTypeInfo().Assembly);
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateDiscountCommandHandler)));
+
         //services.AddScoped<ICorrelationIdGenerator, CorrelationIdGenerator>();
         services.AddScoped<IDiscountRepository, DiscountRepository>();
         services.AddAutoMapper(typeof(Startup));

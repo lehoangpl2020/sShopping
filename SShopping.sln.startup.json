@@ -54,8 +54,8 @@
   "MultiProjectConfigurations": {
     "A + B (Ext)": {
       "Projects": {
-        "Baseket.API": {},
-        "Discount.API": {}
+        "Basket.API": { "StartProject": true },
+        "Discount.API": { "StartProject": true }
 
 
       }
