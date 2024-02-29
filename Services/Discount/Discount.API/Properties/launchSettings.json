@@ -3,35 +3,40 @@
     "Discount.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5168"
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "publishAllPorts": true
-    }
-  },
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:35225",
-      "sslPort": 0
+      "applicationUrl": "https://localhost:54786;http://localhost:54792"
     }
   }
 }
+
+//{
+//  "profiles": {
+//    "Discount.API": {
+//      "commandName": "Project",
+//      "launchBrowser": true,
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development"
+//      },
+//      "applicationUrl": "https://localhost:54786;http://localhost:54792"
+//    },
+//    "WSL": {
+//      "commandName": "WSL2",
+//      "launchBrowser": true,
+//      "launchUrl": "https://localhost:54786",
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development",
+//        "ASPNETCORE_URLS": "https://localhost:54786;http://localhost:54792"
+//      },
+//      "distributionName": ""
+//    },
+//    "Docker": {
+//      "commandName": "Docker",
+//      "launchBrowser": true,
+//      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+//      "publishAllPorts": true,
+//      "useSSL": true
+//    }
+//  }
+//}

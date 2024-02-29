@@ -20,9 +20,11 @@
 
 //app.Run();
 using Basket.API.Swagger;
+using Basket.Application.GrpcService;
 using Basket.Application.Handlers;
 using Basket.Core.Repositories;
 using Basket.Infrastructure.Repositories;
+using Discount.Grpc.Protos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -91,7 +93,12 @@ public class Startup
         services.AddScoped<IBasketRepository, BasketRepository>();
         services.AddAutoMapper(typeof(Startup));
 
+        // grpc
+        services.AddScoped<DiscountGrpcService>();
 
+        var grpcSetting = Configuration["GrpcSettings:DiscountUrl"];
+        services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
+            (o => o.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
 
     }
 
