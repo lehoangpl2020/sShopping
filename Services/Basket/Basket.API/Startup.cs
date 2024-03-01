@@ -25,6 +25,7 @@ using Basket.Application.Handlers;
 using Basket.Core.Repositories;
 using Basket.Infrastructure.Repositories;
 using Discount.Grpc.Protos;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -99,6 +100,18 @@ public class Startup
         //var grpcSetting = Configuration["GrpcSettings:DiscountUrl"];
         //services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
         //    (o => o.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
+
+
+
+
+        services.AddMassTransit(config =>
+        {
+            config.UsingRabbitMq((ct, cfg) =>
+            {
+                cfg.Host(Configuration["EventBusSettings:HostAddress"]);
+            });
+        });
+        services.AddMassTransitHostedService();
 
     }
 

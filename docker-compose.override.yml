@@ -36,6 +36,13 @@ services:
     ports:
       - "14333:1433"
 
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
 
   portainer:
     container_name: portainer
@@ -69,10 +76,12 @@ services:
 #      - ASPNETCORE_URLS=http://*:9001
       - "CacheSettings__ConnectionString=basketdb:6379"
       - "GrpcSettings__DiscountUrl=http://discount.api"
-      #- "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
       #- "ElasticConfiguration__Uri=http://elasticsearch:9200"
     depends_on:
       - basketdb
+      - rabbitmq
+
     ports:
       - "9001:80"
 

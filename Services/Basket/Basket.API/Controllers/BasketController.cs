@@ -5,8 +5,8 @@ using Basket.Application.Queries;
 using Basket.Application.Responses;
 using Basket.Core.Entities;
 //using Common.Logging.Correlation;
-//using EventBus.Messages.Events;
-//using MassTransit;
+using EventBus.Messages.Events;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,15 +15,15 @@ namespace Basket.API.Controllers;
 public class BasketController : ApiController
 {
     private readonly IMediator _mediator;
-  //  private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<BasketController> _logger;
-   // private readonly ICorrelationIdGenerator _correlationIdGenerator;
+    //private readonly ICorrelationIdGenerator _correlationIdGenerator;
 
-    public BasketController(IMediator mediator, ILogger<BasketController> logger
+    public BasketController(IMediator mediator, ILogger<BasketController> logger, IPublishEndpoint publishEndpoint
        )
     {
         _mediator = mediator;
-        //_publishEndpoint = publishEndpoint;
+        _publishEndpoint = publishEndpoint;
         _logger = logger;
         //_correlationIdGenerator = correlationIdGenerator;
         //_logger.LogInformation("CorrelationId {correlationId}:", _correlationIdGenerator.Get());
@@ -72,10 +72,19 @@ public class BasketController : ApiController
             return BadRequest();
         }
 
+        // publish to Queue
         //var eventMesg = BasketMapper.Mapper.Map<BasketCheckoutEvent>(basketCheckout);
-        //eventMesg.TotalPrice = basket.TotalPrice;
-        //eventMesg.CorrelationId = _correlationIdGenerator.Get();
-        //await _publishEndpoint.Publish(eventMesg);
+
+        var eventMesg = new BasketCheckoutEvent()
+        {
+            UserName = basketCheckout.UserName
+        };
+        eventMesg.TotalPrice = basket.TotalPrice;
+        //eventMesg.CorrelationId = _correlationIdGenerator.Get(); 
+        eventMesg.CorrelationId = Guid.NewGuid().ToString("D");
+        await _publishEndpoint.Publish(eventMesg);
+        
+        
         //remove the basket
         var deleteQuery = new DeleteBasketByUserNameQuery(basketCheckout.UserName);
         await _mediator.Send(deleteQuery);

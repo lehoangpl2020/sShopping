@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Basket.Application.Handlers;
 
-public class DeleteBasketByUserNameHandler: IRequestHandler<DeleteBasketByUserNameQuery>
+public class DeleteBasketByUserNameHandler : IRequestHandler<DeleteBasketByUserNameQuery>
 {
     private readonly IBasketRepository _basketRepository;
 
@@ -12,14 +12,8 @@ public class DeleteBasketByUserNameHandler: IRequestHandler<DeleteBasketByUserNa
     {
         _basketRepository = basketRepository;
     }
-    public async Task<Unit> Handle(DeleteBasketByUserNameQuery request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteBasketByUserNameQuery request, CancellationToken cancellationToken)
     {
         await _basketRepository.DeleteBasket(request.UserName);
-        return Unit.Value;
-    }
-
-    Task IRequestHandler<DeleteBasketByUserNameQuery>.Handle(DeleteBasketByUserNameQuery request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
     }
 }

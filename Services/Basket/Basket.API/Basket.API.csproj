@@ -11,6 +11,9 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
+    <PackageReference Include="MassTransit" Version="7.3.0" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.3.0" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="7.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
@@ -18,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\EventBus.Messages\EventBus.Messages.csproj" />
     <ProjectReference Include="..\Basket.Application\Basket.Application.csproj" />
     <ProjectReference Include="..\Basket.Infrastructure\Basket.Infrastructure.csproj" />
   </ItemGroup>
