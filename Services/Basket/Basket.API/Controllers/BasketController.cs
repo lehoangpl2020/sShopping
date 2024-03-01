@@ -77,7 +77,11 @@ public class BasketController : ApiController
 
         var eventMesg = new BasketCheckoutEvent()
         {
-            UserName = basketCheckout.UserName
+            UserName = basketCheckout.UserName,
+            EmailAddress = basketCheckout.EmailAddress,
+            Expiration = basketCheckout.Expiration,
+            FirstName = basketCheckout.FirstName,
+            LastName = basketCheckout.LastName,
         };
         eventMesg.TotalPrice = basket.TotalPrice;
         //eventMesg.CorrelationId = _correlationIdGenerator.Get(); 

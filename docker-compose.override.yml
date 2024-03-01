@@ -34,7 +34,7 @@ services:
       ACCEPT_EULA: "Y"
     restart: always
     ports:
-      - "14333:1433"
+      - "1433:1433"
 
   rabbitmq:
     container_name: rabbitmq
@@ -108,6 +108,6 @@ services:
       - "ElasticConfiguration__Uri=http://elasticsearch:9200"
     depends_on:
       - orderdb
-     # - rabbitmq
+      - rabbitmq
     ports:
       - "9003:80"
