@@ -94,15 +94,16 @@ public class Startup
         services.AddAutoMapper(typeof(Startup));
 
         // grpc
-        services.AddScoped<DiscountGrpcService>();
+        //services.AddScoped<DiscountGrpcService>();
 
-        var grpcSetting = Configuration["GrpcSettings:DiscountUrl"];
-        services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
-            (o => o.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
+        //var grpcSetting = Configuration["GrpcSettings:DiscountUrl"];
+        //services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
+        //    (o => o.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
 
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescript
+        ionProvider provider)
     {
         if (env.IsDevelopment())
         {
